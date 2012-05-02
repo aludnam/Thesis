@@ -1,0 +1,2863 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{fixltx2e} % get textsubscript
+\end_preamble
+\use_default_options true
+\master Thesis.lyx
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement !h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+home}{/Users/ondrejmandula/}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+qd}{
+\backslash
+home project/data/qdots/}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+Non-negative matrix factorisation in localisation microscopy
+\end_layout
+
+\begin_layout Section
+The pipe-line of the NMF for real data evaluation
+\end_layout
+
+\begin_layout Standard
+NMF as a model for blinking quantum dots applied on large datasets with
+ large number of sources is challenging as the NMF algorithms often converge
+ to local minima.
+ This pipeline suggest a simplification of the problem by dividing the data
+ into smaller patches (section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Dividing-data-into-patches"
+
+\end_inset
+
+), running the NMF on each of them and finally stitching the patches together.
+ 
+\end_layout
+
+\begin_layout Standard
+The pipeline is as follows:
+\end_layout
+
+\begin_layout Enumerate
+Data calibration
+\end_layout
+
+\begin_layout Enumerate
+Dividing data into patches
+\end_layout
+
+\begin_layout Enumerate
+Discarding patches with low signal
+\end_layout
+
+\begin_layout Enumerate
+Rough estimation of the number of sources
+\end_layout
+
+\begin_layout Enumerate
+Multiple runs of NMF on each patch
+\end_layout
+
+\begin_layout Enumerate
+Stitching
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=1]{
+\backslash
+qd S357/results/dataChunks.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Division of the dataset into smaller patches.
+ The time average of the data is shown as a grey valued image.
+ Boxes with thick lines will be considered for NMF evaluation.
+ Boxes with thin lines are considered to be empty.
+ Number of in each box indicates the (over)estimated number of sources.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Patches"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Threshold
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Note
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t_{m}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Discarding patches with low signal (sec.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Discarding-pathes-with-low-signal"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t_{u}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Estimating number of sources 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ from PCA (sec.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Estimation-of-number-of-sources"
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t_{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Termination criterion of NMF updates (sec.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Multiple-runs-of-NMF"
+
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Subsection
+Data calibration
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Data-callibration"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Raw data from microscope recorded on the EM-CCD camera (Andor IXon) (
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula $512\times512$
+\end_inset
+
+ pixels 
+\begin_inset Formula $\times$
+\end_inset
+
+ 1000 time frames) are calibrated such that the image intensity corresponds
+ to photon counts.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Output:
+\series default
+ 
+\family typewriter
+dpix (nx
+\begin_inset Formula $\times$
+\end_inset
+
+ny
+\begin_inset Formula $\times$
+\end_inset
+
+nt)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 12
+placement O
+overhang 0in
+width "25col%"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "22col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=.5]{./Images/Psf/QD625_InFocusRandom_bar400nm.eps}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Individual PSFs.
+ Scale bar 400 nm (5 pixels).
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Randomly-distributed-PSFs."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Dividing data into patches
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Dividing-data-into-patches"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Data are divided into 
+\begin_inset Formula $25\times25$
+\end_inset
+
+ pixel patches 
+\family typewriter
+
+\begin_inset Formula $\mathtt{dpix_{p}}$
+\end_inset
+
+
+\family default
+ with 5 pixels overlap (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Patches"
+
+\end_inset
+
+).
+ The overlap has been chosen as an estimated extent of a single in-focus
+ point spread function PSF (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Randomly-distributed-PSFs."
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Output:
+\series default
+ 
+\family typewriter
+
+\begin_inset Formula $\mathtt{dpix_{p}}$
+\end_inset
+
+ (25
+\begin_inset Formula $\times$
+\end_inset
+
+25
+\begin_inset Formula $\times$
+\end_inset
+
+nt)
+\family default
+patches or reshaped (columns of an image concatenated) 
+\family typewriter
+
+\begin_inset Formula $\mathtt{dpix_{p}}$
+\end_inset
+
+ (625
+\begin_inset Formula $\times$
+\end_inset
+
+nt)
+\end_layout
+
+\begin_layout Subsection
+Discarding patches with low signal
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Discarding-pathes-with-low-signal"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Maximum of the time average of each patch 
+\family typewriter
+
+\begin_inset Formula $m_{p}=\max_{i,j}\left\langle \mathtt{dpixc_{p}[i,j,t]}\right\rangle _{t}$
+\end_inset
+
+
+\family default
+ is compared to the maximum of the average of the whole data 
+\family typewriter
+
+\begin_inset Formula $m=\max_{i,j}\left\langle \mathtt{dpixc[i,j,t]}\right\rangle _{t}$
+\end_inset
+
+
+\family default
+.
+ The patches with 
+\begin_inset Formula $m_{p}/m<t_{m}$
+\end_inset
+
+ are considered to contain only weak signal and are not considered for further
+ evaluation.
+ In fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Patches"
+
+\end_inset
+
+ the boxes with thick lines are used for evaluation.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Threshold: 
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula $t_{m}=0.25$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Estimation of number of sources
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Estimation-of-number-of-sources"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Number of sources 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ in each patch is roughly estimated from comparing the principal components
+ 
+\begin_inset Formula $\bm{u}_{j}$
+\end_inset
+
+ of the 
+\begin_inset Formula $\mathtt{dvec_{p}[i,t]}$
+\end_inset
+
+ data.
+ 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ is estimated as the number of components which satisfy 
+\begin_inset Formula $\bm{u}_{j}/\bm{u}_{1}>t_{u}$
+\end_inset
+
+ (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Patches"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Another possibility is to set a threshold on the amount of the explained
+ variance by the principal components.
+ However, threshold value becomes difficult to find for data with high backgroun
+d as demonstrated on the simulated data fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Simulated-QDs-random"
+
+\end_inset
+
+.
+ User should be able to test the source estimation on a patch where the
+ number of sources is possible to guess (e.g.
+ sparse sources)
+\end_layout
+
+\begin_layout Standard
+Three different levels of background (bg) was simulated fig.
+ The plots show results from ten different geometrical configuration of
+ randomly scattered in-focus PSFs.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizeTwoFig}{.45}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{centering}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeTwoFig]{
+\backslash
+qd DrandomVarNoise/results/pca}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+principal coefficients
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeTwoFig]{
+\backslash
+qd DrandomVarNoise/results/pca_explainedVar}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+explained variance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{centering}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Simulated 50 QDs randomly scattered (10 different geometrical configurations).
+ Red, green and blue curves represent datasets with 10, 100 and 1000 photons/pix
+el in background, respectively.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Simulated-QDs-random"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizefigtab}{.4}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+bg
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+1000
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{.5cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\mathtt{dpixc(i,j,t)}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/d_np1000_bg10}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/d_np1000_bg100}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/d_np1000_bg1000}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{.4cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $\left\langle \mathtt{dpixc(i,j)}\right\rangle _{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/dmean_np1000_bg10}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/dmean_np1000_bg100}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizefigtab]{
+\backslash
+qd 
+\end_layout
+
+\begin_layout Plain Layout
+
+/DrandomVarNoise/results/dmean_np1000_bg1000}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Simulated data of 50 QDs randomly scattered (10 different configurations).
+ Same intensity, different amount of background added.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Simulated 50 QDs random"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Threshold: 
+\begin_inset Formula $t_{u}=0.003$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Output:
+\series default
+ number of sources 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Multiple runs of NMF algorithm
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Multiple-runs-of-NMF"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Algorithm
+\end_layout
+
+\begin_layout Standard
+On each patch 
+\begin_inset Formula ${\bf D}(x,t)=\mathtt{dvec_{p}[i,t]}$
+\end_inset
+
+ we run Lee & Seung NMF mutliplicative updates 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Lee2001"
+
+\end_inset
+
+ for NMF model 
+\begin_inset Formula ${\bf D}(x,t)={\bf W}(x){\bf H}(t)$
+\end_inset
+
+ minimising the objective function
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\min_{{\bf W,H}\geq0}KL({\bf D}\Vert{\bf WH})=\min_{{\bf W,H}\geq0}-\sum_{xt}\left(d_{xt}\log\sum_{k=1}^{K}w_{xk}h_{kt}-\sum_{k=1}^{K}w_{xk}h_{kt}\right)+C
+\]
+
+\end_inset
+
+Sources 
+\begin_inset Formula ${\bf w}_{k}(x)$
+\end_inset
+
+ (columns of 
+\begin_inset Formula ${\bf W}$
+\end_inset
+
+) are scaled such that 
+\begin_inset Formula $\sum_{x}{\bf w}_{k}(x)=1$
+\end_inset
+
+ after each iteration.
+ Background is modelled as an additional constant flat source 
+\begin_inset Formula ${\bf w}_{K+1}(x)=\mbox{const}$
+\end_inset
+
+, with intensity 
+\begin_inset Formula ${\bf h}_{K+1}(t)$
+\end_inset
+
+.
+ Only the temporal part 
+\begin_inset Formula ${\bf h}_{K+1}(t)$
+\end_inset
+
+ of the background is updated to model the changes of the background intensity
+ during the data acquisition.
+ The background levels can change significantly during the measurement due
+ to bleaching of some sources.
+ The spatial part of this background source 
+\begin_inset Formula ${\bf w}_{K+1}(x)$
+\end_inset
+
+ is not updated.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Termination
+\end_layout
+
+\begin_layout Standard
+The algorithm terminates when the value of the objective is under a threshold
+ 
+\begin_inset Formula $t_{t}$
+\end_inset
+
+ or when the algorithm reaches the maximum number of iterations.
+ Alternatively the derivative of the objective function can also be used
+ for termination.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Multiple restarts of the algorithm
+\end_layout
+
+\begin_layout Standard
+For the first run of the algorithm, 
+\begin_inset Formula ${\bf W}$
+\end_inset
+
+ and 
+\begin_inset Formula ${\bf H}$
+\end_inset
+
+ are initialised from uniform random distribution on interval 
+\begin_inset Formula $[0..1]$
+\end_inset
+
+.
+ Although the Lee & Seung algorithms is convex with respect to 
+\begin_inset Formula ${\bf W}$
+\end_inset
+
+ and 
+\begin_inset Formula ${\bf H}$
+\end_inset
+
+ separately, it is non-convex in both simultaneously
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hoyer2004,Kim2008"
+
+\end_inset
+
+.
+ Therefore the algorithm tends to converge into local minimum.
+ We use heuristic procedure with multiple iterative restarts to achieve
+ better local minima of the optimisation procedure.
+ 
+\end_layout
+
+\begin_layout Standard
+After termination of the 
+\begin_inset Formula $j^{th}$
+\end_inset
+
+ run of the algorithm, the estimated sources 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ are sorted according to the 
+\begin_inset Formula $l_{2}$
+\end_inset
+
+ norm.
+ First 
+\begin_inset Formula $j$
+\end_inset
+
+ sorted sources 
+\begin_inset Formula ${\bf w}_{1..j}$
+\end_inset
+
+ (and corresponding 
+\begin_inset Formula ${\bf h}_{1..j}$
+\end_inset
+
+) are kept while the rest 
+\begin_inset Formula ${\bf w}_{j+1..K}$
+\end_inset
+
+ (
+\begin_inset Formula ${\bf h}_{j+1..K}$
+\end_inset
+
+) are randomised (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Iterative initialisation of W"
+
+\end_inset
+
+).
+ Initial values of 
+\begin_inset Formula ${\bf W}$
+\end_inset
+
+ and 
+\begin_inset Formula ${\bf H}$
+\end_inset
+
+ for the next run (
+\begin_inset Formula $j+1$
+\end_inset
+
+) are therefore composed from 
+\begin_inset Formula $j$
+\end_inset
+
+ `best' components of the previous run (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+) and 
+\begin_inset Formula $K-j$
+\end_inset
+
+ randomly initialised components (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Iterative initialisation of W"
+
+\end_inset
+
+).
+ The procedure runs until 
+\begin_inset Formula $j=K$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The results of the several runs of the iterative process is illustrated
+ on simulated data.
+ Simulation of eight blinking QDs attached to a slanting bar is shown in
+ fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Data-true-estimations"
+
+\end_inset
+
+a.
+ The individual QDs were separated by 200 nm and the axial difference between
+ the tips of the bar was 
+\begin_inset Formula $1.6\mbox{\mu m}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The first run with random initialisation fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Iterative initialisation of W"
+
+\end_inset
+
+a gives unsatisfying results fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+a.
+ Some of the 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ contain multiple PSFs while some of the real sources are represented several
+ times by multiple 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+s.
+ After roughly 10 runs with iterative initialisation described above the
+ eight true sources are recovered (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+e).
+ Further runs do not have an effect on the already estimated sources fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+f.
+ The simulation suggests that the overestimation of the number of sources
+ 
+\begin_inset Formula $K_{p}$
+\end_inset
+
+ leads to incorrect results after the first run but gets gradually better
+ during the further runs of the iterative initialisation procedure.
+ The redundant sources are used by the algorithm to model background noise
+ (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+f).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizeresw}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S358/images/dpixc_line}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Data
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S358/images/wtrue_line}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+True sources
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S358/images/wres_line}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Estimated sources
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Simulated data.
+ (a) Eight frames (out of 
+\begin_inset Formula $10^{3}$
+\end_inset
+
+) of the simulated data set.
+ (b) The true sources.
+ (c) Recovered sources after iterative initialisation procedure.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Data-true-estimations"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizeresw}{.5}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Change S372 to S373 and get results from more dense dataset (16QDs 100nm
+ separated)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart0.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart2.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart4.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 5
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart7.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 8
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart11.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 12
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/winit_restart24.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 25
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Iterative initialisation of 
+\begin_inset Formula ${\bf W}$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Iterative initialisation of W"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizeresw}{.5}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart0.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart2.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart4.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 5
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart7.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 8
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart11.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 12
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S372/images/resw_restart24.eps}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+run 25
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Results of the different run after iterative initialisation.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Results-of-W-iterative initialisation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+sizeresw}{.5}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S373/images/wres_1to25_tiled}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Formula $K_{p}=25$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=
+\backslash
+sizeresw]{
+\backslash
+qd S359/images/wres_1to25_tiled}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Formula $K_{p}=88$
+\end_inset
+
+ (first 25 shown)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Results of the different run after iterative initialisation.
+ There are 16 true sources in the simulated data.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\lang american
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Note 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{ex}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+excitation light
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+405 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{em}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+emission light
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+625 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t_{exp}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+exposure time 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50 ms
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+numerical aperture
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+refraction index
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.52
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+M 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+magnification of the objective
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+63
+\begin_inset Formula $\times$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+pixel-size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+size of a pixel in image plane
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+79 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MSR
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mark/space ratio
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1/31
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SIM grating period
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+561 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+QD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+quantum dots 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+QD625
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Parameters of the experiment
+\lang american
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Parameters-of-the"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "/Users/ondrejmandula/DTC/paper/references/Microscopy,/Users/ondrejmandula/DTC/paper/references/QuantumDots,/Users/ondrejmandula/DTC/paper/references/MachineLearning"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

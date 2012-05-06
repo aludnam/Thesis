@@ -4,6 +4,7 @@
 \begin_header
 \textclass article
 \use_default_options true
+\master Chapter_NMFinLM.lyx
 \maintain_unincluded_children false
 \language british
 \language_package default
@@ -24,6 +25,7 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement !h
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -61,10 +63,578 @@
 \begin_body
 
 \begin_layout Standard
-Appendix to Chapter_NMFinLm.lyx
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+home}{/Users/ondrejmandula/}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+qd}{
+\backslash
+home project/data/qdots/}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Description of the features
 \end_layout
 
 \begin_layout Standard
+The features used in classification are computed from images shown in fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+.
+ Some of the features (nc, maxF, sumD, edgedist) require reshaping the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+tt
+\end_layout
+
+\end_inset
+
+ npix 
+\begin_inset Formula $\times$
+\end_inset
+
+ 1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ vectors 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ into two dimensional 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+tt
+\end_layout
+
+\end_inset
+
+ nx 
+\begin_inset Formula $\times$
+\end_inset
+
+ ny 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ images shown in fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+a (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+tt
+\end_layout
+
+\end_inset
+
+ nx, ny 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+are pixel dimensions of the image.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Formula $l^{2}$
+\end_inset
+
+ norm
+\end_layout
+
+\begin_layout Standard
+Good sources (credible representations of PSF) are sparse.
+ Measure of sparsity can provide a quality measure on 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+.
+ All 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+s are normalised with respect to the 
+\begin_inset Formula $l^{1}$
+\end_inset
+
+ norm (
+\begin_inset Formula $\sum_{j}w_{jk}=1$
+\end_inset
+
+).
+ Hoyer sparsity measure 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hoyer2004"
+
+\end_inset
+
+ 
+\begin_inset Formula $s=\frac{\sqrt{n}-l^{1}/l^{2}}{\sqrt{n}-1}$
+\end_inset
+
+ then reduces to 
+\begin_inset Formula $l^{2}$
+\end_inset
+
+ norm.
+ However, other sparsity measures can be considered 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hurley2008"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+l2=sqrt(sum(W.^2,1)');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+bgDiffSum
+\end_layout
+
+\begin_layout Standard
+The thresholded background of a good source should be homogeneous area.
+ 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ representing noise or multiple sources has a `patchy' background as shown
+ in fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+b.
+ This feature quantifies the homogeneity of the background.
+ The derivatives (differences) are for simplicity applied on the (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+tt
+\end_layout
+
+\end_inset
+
+ npix
+\begin_inset Formula $\times$
+\end_inset
+
+1
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+) vectors 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ instead of the resized images shown in fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+.
+ This feature is normalised by the number of pixels to accommodate different
+ sizes of 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bgDiffSum=sum(abs(diff(bgvec)),1)'/npix;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+nc
+\end_layout
+
+\begin_layout Standard
+Foreground image of a good source should be a single blob (thresholded PSF).
+ Multiple blobs in the foreground image indicates non realistic PSF.
+ This feature uses a MATLAB function  
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+tt
+\end_layout
+
+\end_inset
+
+ bwlabel
+.m
+\lang british
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ which labels connected components in 2-D binary image.
+ One of the outputs of this function is a number of connected components
+ (blobs).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[L,n] = bwlabelStack(fg, 4); nc=n';
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+maxF
+\end_layout
+
+\begin_layout Standard
+A theoretical PSF can be calculated from the parameters of the microscope.
+ This feature measures the maximum of the cross-correlation between 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ (reshaped into image) and the theoretical in-focus PSF.
+ Due to the symmetry of the PSF the cross-corelation is equivalent to convolutio
+n shown in fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+d.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+wpixf = imfilter(wpix,psf,'same'); % convolution with psf
+\end_layout
+
+\begin_layout Plain Layout
+
+maxF=squeeze(max(max(wpixf)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+sumD
+\end_layout
+
+\begin_layout Standard
+This feature is designed to estimate whether the size of the blobs in 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ is on the correct scale.
+ The feature computes the difference between the original image 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ (fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+a) and the PSF smoothed version 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+d.
+ When the blobs in 
+\begin_inset Formula ${\bf w}_{k}$
+\end_inset
+
+ are too small they disappear during the smoothing process.
+ This should give large value of this feature.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+d=abs(wpixf-wpix);
+\end_layout
+
+\begin_layout Plain Layout
+
+sumD=squeeze(sum(sum(d,1),2))/npix;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+sumFg
+\end_layout
+
+\begin_layout Standard
+Sum of the binary foreground fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example of estimated sources, background, foreground..."
+
+\end_inset
+
+c.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sumFg=squeeze(sum(sum(fg>0)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+meanh
+\end_layout
+
+\begin_layout Standard
+Mean value (over time) of the intensity 
+\begin_inset Formula $H$
+\end_inset
+
+.
+ We assume that good sources are relatively bright.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\ttfamily},language=Matlab"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+meanh=mean(h,2);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+edgedist
+\end_layout
+
+\begin_layout Standard
+Distance of the global maximum from the nearest edge is supposed to indicate
+ half missing sources.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[scale=.5]{
+\backslash
+qd /S371/results/hintonCorrelationFeatures}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Correlation of features 
+\family typewriter
+hinton(corrcoef(featuresAll))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="9" columns="4">
 <features tabularvalignment="middle">
@@ -450,7 +1020,6 @@ tt
 \begin_inset Text
 
 \begin_layout Plain Layout
-
 edgedist
 \end_layout
 
@@ -514,6 +1083,652 @@ appendix
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parameters of the experiments (real data and simulations)
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\lang american
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Note 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{em}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+emission light
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+625 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+numerical aperture
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+refraction index
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.5
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+pixel-size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+size of a pixel in image plane
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n_{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number of frames 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10^{3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n_{phot}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mean number of photons
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5\cdot10^{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $p_{blink}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+distribution of blinking
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uniform
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Simulations
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Note 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{ex}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+excitation light
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+405 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{em}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+emission light
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+625 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t_{exp}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+exposure time 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50 ms
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+numerical aperture
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+refraction index
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.52
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+pixel-size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+size of a pixel in image plane
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+79 nm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+QD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+quantum dots 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+QD625
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n_{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number of frames 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10^{3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Real data
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Parameters of the experiment
+\lang american
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Parameters of the (a) real data and (b) simulations"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
